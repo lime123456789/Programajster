@@ -1,12 +1,27 @@
 const monadicOperations = {
-    "-": a => -1 * a,
+    "-": {
+	function: a => -1 * a,
+	priority: 1,
+    },
 }
 
 const dyadicOperations = {
-    "+": (a, b) => a + b,
-    "-": (a, b) => a - b,
-    "*": (a, b) => a * b,
-    "/": (a, b) => a / b,
+    "+": {
+	function: (a, b) => a + b,
+	priority: 1,
+    },
+    "-": {
+	function: (a, b) => a - b,
+	priority: 1,
+    },
+    "*": {
+	function: (a, b) => a * b,
+	priority: 1,
+    },
+    "/": {
+	function: (a, b) => a / b,
+	priority: 1,
+    },
 }
 
 function evalMonadic(op, a) {

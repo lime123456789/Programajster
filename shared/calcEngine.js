@@ -25,11 +25,11 @@ const dyadicOperations = {
 }
 
 function evalMonadic(op, a) {
-    return monadicOperations[op]?.(a)
+    return monadicOperations[op]?.function(a)
 }
 
 function evalDyadic(op, a, b) {
-    return dyadicOperations[op]?.(a, b)
+    return dyadicOperations[op]?.function(a, b)
 }
 
 export function evaluate(op, ...args) {

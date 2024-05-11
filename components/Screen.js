@@ -3,11 +3,14 @@ export class Screen extends HTMLElement {
 	super()
 	this.attachShadow({ mode: "open" })
 	this.shadowRoot.innerHTML = `
-<input>
+
+    <burgir-></burgir->
+
+
 <style>
   :host {
       display: block;
-      border: #000 solid 1px;
+      border: red solid 1px;
   }
   input {
       all: unset;
@@ -15,6 +18,12 @@ export class Screen extends HTMLElement {
       width: 100%;
       padding: .5em;
   }
+  body {
+    background: rgb(19, 19, 19);
+    color: #fff;
+    font-family: 'Noto Sans', sans-serif;
+  }
+  
 </style>
         `
 	this.shadowRoot.querySelector("input").addEventListener("change", _ => console.log(this.shadowRoot.querySelector("input").value))

@@ -11,6 +11,7 @@ export class ButtonOperation extends HTMLElement {
     display: grid;
   }
   
+  
 </style>
         `
 	//data-representation - dla obrazka

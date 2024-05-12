@@ -55,6 +55,27 @@ export function evaluate(op, ...args) {
     })[args.length]?.(op, ...args)
 }
 
-export function lexer(input, numberSet) {
-    return input.split(/\s+/)
+const radixMapping = {
+    2: "0b",
+    8: "0o",
+    10: "",
+    16: "0x",
+}
+
+export async function lexer(input, radix = 10) {
+    return await Promise.all(
+	input.split(/\s+/)
+	    .map(a => listOperations("monadicOperations", "dyadicOperations")
+		 .includes(a)
+		 ? { value: a }
+		 : Number(`${radixMapping[radix]}${a}`)
+		 ? { value: Number(`${radixMapping[radix]}${a}`) }
+		 : { error: "not a known token" }
+		)
+	    .map(a => new Promise((res, rej) => a?.error === undefined
+				  ? res(a?.value)
+				  : rej(a?.error)
+				 )
+		)
+    ).catch(_=>_)
 }

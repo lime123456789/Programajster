@@ -4,17 +4,17 @@ export class ButtonNumber extends HTMLElement {
 	this.attachShadow({ mode: "open" })
 	this.shadowRoot.innerHTML = `
   
-      <div >
+      <div class="znaki">
         <div class="basic-grid">
-          <button class="b">1</button>
-          <div class="cyfry">2</div>
-          <div class="cyfry">3</div>
-          <div class="cyfry">4</div>
-          <div class="cyfry">5</div>
-          <div class="cyfry">6</div>
-          <div class="cyfry">7</div>
-          <div class="cyfry">8</div>
-          <div class="cyfry">9</div>
+          <button class="cyfry">1</button>
+          <button class="cyfry">2</button>
+          <button class="cyfry">3</button>
+          <button class="cyfry">4</button>
+          <button class="cyfry">5</button>
+          <button class="cyfry">6</button>
+          <button class="cyfry">7</button>
+          <button class="cyfry">8</button>
+          <button class="cyfry">9</button>
         </div>
 
       </div>
@@ -31,6 +31,15 @@ export class ButtonNumber extends HTMLElement {
     gap: 1rem;
     grid-template-columns: repeat(3, minmax(240px, 1fr));
   }
+
+  .znaki{
+    //display: block;
+    width: 100%;
+    height: 100%;
+    border: solid 3px lime;
+    //overflow: scroll;
+  }
+
   .cyfry{
     color: green;
     display: flex;
@@ -46,10 +55,15 @@ export class ButtonNumber extends HTMLElement {
     border-radius: 4px;
     transition: all 500ms;
     overflow: hidden;
-
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    opacity: 0.5;
+  }
+
+  .cyfry:hover {
+    box-shadow: red 0px 0.35em 1.175em, red 0px 0.175em 0.5em;
+    opacity: 1;
   }
 
 </style>

@@ -4,13 +4,21 @@ export class ButtonOperation extends HTMLElement {
 	this.attachShadow({ mode: "open" })
 	this.shadowRoot.innerHTML = `
 
- <div style="border: solid pink 3px">cos </div>
+ <div class="scrollmenu">
+      
+</div>
+
+
 
 <style>
   :host{
     display: grid;
   }
   
+  .scrollmenu{
+    border: solid red 3px;
+    displa
+  }
   
 </style>
         `

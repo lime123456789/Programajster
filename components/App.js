@@ -5,6 +5,8 @@ export class App extends HTMLElement {
 	this.shadowRoot.innerHTML = `
 <screen-></screen->
 <keys-></keys->
+<buttonoperation></buttonoperation->
+
 
 <style>
   :host {

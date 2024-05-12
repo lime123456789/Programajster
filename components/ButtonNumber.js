@@ -5,8 +5,8 @@ export class ButtonNumber extends HTMLElement {
 	this.shadowRoot.innerHTML = `
   
       <div >
-        <section class="basic-grid">
-          <div class="cyfry">1</div>
+        <div class="basic-grid">
+          <button class="b">1</button>
           <div class="cyfry">2</div>
           <div class="cyfry">3</div>
           <div class="cyfry">4</div>
@@ -15,7 +15,7 @@ export class ButtonNumber extends HTMLElement {
           <div class="cyfry">7</div>
           <div class="cyfry">8</div>
           <div class="cyfry">9</div>
-        </section>
+        </div>
 
       </div>
   
@@ -51,6 +51,7 @@ export class ButtonNumber extends HTMLElement {
     background-position: center;
     background-repeat: no-repeat;
   }
+
 </style>
         `
     }

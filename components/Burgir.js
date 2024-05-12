@@ -6,11 +6,31 @@ export class Burgir extends HTMLElement {
 
     <nav class="navbar">
       <ul class="navbar-nav">
+
         <li class="nav-item">
           <a href="#" class="nav-link">
-            <span class="link-text">Cats</span>
+            <span class="link-text">Hex</span>
           </a>
         </li>
+
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <span class="link-text">Dec</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <span class="link-text">Oct</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <span class="link-text">Bin</span>
+          </a>
+        </li>
+
       </ul>
     </nav>
 
@@ -45,11 +65,28 @@ export class Burgir extends HTMLElement {
     position: fixed;
     width: 5rem;
     height: 100vh;
-    background-color: gray;
+    background-color: #4E575A;
     //transition: width 600ms ease;
     //overflow: scroll;
   }
 
+  .navbar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+  }
+
+  .nav-item{
+    width: 100%;
+  }
+
+  .nav-item:last-child{
+    margin-top: auto;
+  }
 </style>
         `
 	

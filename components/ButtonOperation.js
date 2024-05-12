@@ -4,7 +4,7 @@ export class ButtonOperation extends HTMLElement {
 	this.attachShadow({ mode: "open" })
 	this.shadowRoot.innerHTML = `
 
-
+ <div style="border: solid pink 3px">cos </div>
 
 <style>
   :host{

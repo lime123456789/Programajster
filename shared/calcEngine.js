@@ -24,6 +24,22 @@ const dyadicOperations = {
     },
 }
 
+/* lists out specified types of operators
+ * example:
+ * listOperations("monadicOperations") // will list only monadicOperations
+ * listOperations("dyadicOperations", "monadicOperations") // will list both
+ */
+export function listOperations(...types) {
+    return [...new Set(
+	types
+	    .map(a => ({
+		monadicOperations: Object.keys(monadicOperations),
+		dyadicOperations: Object.keys(dyadicOperations),
+	    })[a])
+	    .flat()
+    )]
+}
+
 function evalMonadic(op, a) {
     return monadicOperations[op]?.function(a)
 }
@@ -37,4 +53,8 @@ export function evaluate(op, ...args) {
 	1: evalMonadic,
 	2: evalDyadic,
     })[args.length]?.(op, ...args)
+}
+
+export function lexer(input, numberSet) {
+    return input.split(/\s+/)
 }

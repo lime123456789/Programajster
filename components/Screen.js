@@ -10,7 +10,7 @@ export class Screen extends HTMLElement {
 <style>
   :host {
       display: block;
-      border: red solid 1px;
+      border: red solid 3px;
   }
   input {
       all: unset;

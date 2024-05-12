@@ -65,7 +65,7 @@ export class Burgir extends HTMLElement {
     position: fixed;
     width: 5rem;
     height: 100vh;
-    background-color: #4E575A;
+    background-color: #272525;
     //transition: width 600ms ease;
     //overflow: scroll;
   }

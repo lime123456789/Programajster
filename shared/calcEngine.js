@@ -54,3 +54,7 @@ export function evaluate(op, ...args) {
 	2: evalDyadic,
     })[args.length]?.(op, ...args)
 }
+
+export function lexer(input, numberSet) {
+    return input.split(/\s+/)
+}

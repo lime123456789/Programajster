@@ -1,0 +1,81 @@
+.paper {
+	position: absolute;
+	height: 600px;
+	width: 450px;
+	background: rgb(255 255 255);
+	margin: -290px -225px;
+	left: 50%;
+	top: 50%;
+	box-shadow: 0px 0px 5px 0px #888;
+}
+
+.paper::before {
+	content: '';
+	position: absolute;
+	left: 45px;
+	height: 100%;
+	width: 2px;
+	background: rgba(255, 0, 0, 0.4);
+}
+
+.lines {
+	margin-top: 60px;
+	height: calc(100% - 60px);
+	width: 100%;
+	background-image: repeating-linear-gradient(white 0px, white 24px, steelblue 25px);
+}
+
+.text {
+	position: absolute;
+	top: 65px;
+	left: 55px;
+	bottom: 10px;
+	right: 10px;
+	line-height: 25px;
+	font-family: 'Indie Flower';
+	overflow: auto;
+	outline: none;
+}
+
+.holes {
+	position: absolute;
+	left: 10px;
+	height: 25px;
+	width: 25px;
+	background-image: url(../img/background.jpg);
+	border-radius: 50%;
+	box-shadow: inset 0px 0px 2px 0px #888;
+}
+
+.hole-top {
+	top: 10%;
+}
+
+.hole-middle {
+	top: 50%;
+}
+
+.hole-bottom {
+	bottom: 10%;
+}
+
+.paper .header {
+	position: absolute;
+    width: 100%;
+    padding: 10px 0;
+}
+
+.paper .logo-wsiz {
+	content: url(../img/wsiz-logo.svg);
+	display: block;
+	height: 40px;
+    margin: 0 auto;
+}
+
+.eraser {
+	content: url(../img/erase.png);
+    position: inherit;
+	width: 30px;
+    right: 10px;
+    top: 15px;
+}

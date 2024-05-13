@@ -1,15 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Witaj Świecie</title>
-    <link rel="stylesheet" href="index.css">
-    <script src="index.js" type="module"></script> 
-  </head>
-  <body>
-    <app-></app->
-  </body>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <title>Kalkulator</title>
+    <link rel="stylesheet" href="./css/calculator.css"></link>
+    <link rel="stylesheet" href="./css/paper.css"></link>
+    <script type="text/javascript" src="./js/calculator.js"></script>
+    <script type="text/javascript" src="./js/modal.js"></script>
+    <script type="text/javascript" src="./js/paper.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container-c">
+            <form action="" name="calc" class="calculator">
+    
+                <span class="type" name="txt"><i>HEX</i></span>
+                <input type="hidden" readonly name="type" value="HEX" />
+                <input type="text" class="value" readonly name="txt" />
+    
+                <span class="char" id="A"><i>A</i></span>
+                <span class="clear"><i>C</i></span>
+                <span class="division"><i>/</i></span>
+                <span class="multiplication"><i>*</i></span>
+    
+                <span class="char" id="B"><i>B</i></span>
+                <span class="num" id="7"><i>7</i></span>
+                <span class="num" id="8"><i>8</i></span>
+                <span class="num" id="9"><i>9</i></span>
+                <span class="minus"><i>-</i></span>
+    
+                <span class="char" id="C"><i>C</i></span>
+                <span class="num" id="4"><i>4</i></span>
+                <span class="num" id="5"><i>5</i></span>
+                <span class="num" id="6"><i>6</i></span>
+                <span class="plus"><i>+</i></span>
+    
+                <span class="char" id="D"><i>D</i></span>
+                <span class="num" id="1"><i>1</i></span>
+                <span class="num" id="2"><i>2</i></span>
+                <span class="num" id="3"><i>3</i></span>
+    
+                <span class="char" id="E"><i>E</i></span>
+                <span class="char" id="F"><i>F</i></span>
+                <span class="num" id="0"><i>0</i></span>
+                <span class="equal"><i>=</i></span>
+            </form>
+            <div class="calculator-modal">
+                <span class="close-modal"><i>X</i></span>
+                <span class="type-select" id="HEX"><i>HEX</i></span>
+                <span class="type-select" id="DEC"><i>DEC</i></span>
+                <span class="type-select" id="OCT"><i>OCT</i></span>
+                <span class="type-select" id="BIN"><i>BIN</i></span>
+            </div>
+        </div>
+        <div class="container-p">
+            <div class="paper">
+                <div class="header">
+                    <img class="logo-wsiz"/>
+                    <input class="eraser" type="image"/>
+                </div>
+                <div class="lines">
+                  <div class="text"></div>
+                </div>
+                <div class="holes hole-top"></div>
+                <div class="holes hole-middle"></div>
+                <div class="holes hole-bottom"></div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p class="copyright">© WSIiZ Rzeszów 2024 Emil Skarbowski w70000, Patryk Pelczar w69993</p>
+    </footer>
+</body>
 </html>
-
-

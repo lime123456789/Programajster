@@ -202,7 +202,6 @@ export async function parser(input, options = {direction: "ltr", priority: true}
 	      .map((a, _, self) => a instanceof Array
 		   ? a.filter(b => typeof(b) == "string")
 		   .reduce((acc, _) => {
-		       console.log(acc)
 		       const args = acc.slice(0, 3)
 		       return acc.toSpliced(0, 3, new DyadOp(args[1], [args[0], args[2]]))
 		   }
@@ -220,4 +219,8 @@ export async function parser(input, options = {direction: "ltr", priority: true}
 	  .at(1).at(0)
     
     return res
+}
+
+export async function run(input, radix) {
+    return (await parser(await lexer(input, radix))).eval()
 }

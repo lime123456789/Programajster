@@ -88,7 +88,7 @@ class MonadOp extends Op {
 	this.value = value
 	this.arg = arg
     }
-    eval = () => evaluate(this.value, this.arg)
+    eval = () => evaluate(this.value, ...[this.arg].map(a => a instanceof Op ? a.eval() : a))
 }
 
 class DyadOp extends Op {
@@ -97,7 +97,7 @@ class DyadOp extends Op {
 	this.value = value
 	this.args = args
     }
-    eval = () => evaluate(this.value, ...this.args)
+    eval = () => evaluate(this.value, ...[...this.args].map(a => a instanceof Op ? a.eval() : a))
 }
 
 export async function parser(input, options = {direction: "ltr", priority: true}) {
@@ -171,7 +171,7 @@ export async function parser(input, options = {direction: "ltr", priority: true}
 	       : 0
 	  )
 
-    const res = dyadByPriority.map((_,__,___) => ___.slice(0,__+1).reduce((acc, ops) => {
+    const res = dyadByPriority.reduce((acc, ops) => {
 	let [dyadMask, woMonads] = acc
 	const dyadIslandLengths = dyadMask
 	      .map((a, i) => Number(a && ops.includes(woMonads[i])))
@@ -216,7 +216,8 @@ export async function parser(input, options = {direction: "ltr", priority: true}
 
 	return [stagedDyadMask, stagedWoDyads]
     }
-									  , [dyadMask, woMonads]))
+				      , [dyadMask, woMonads])
+	  .at(1).at(0)
     
-    return [dyadOpsInUse, dyadByPriority, woMonads, res]
+    return res
 }

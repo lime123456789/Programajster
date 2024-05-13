@@ -16,11 +16,11 @@ const dyadicOperations = {
     },
     "*": {
 	function: (a, b) => a * b,
-	priority: 1,
+	priority: 2,
     },
     "/": {
 	function: (a, b) => a / b,
-	priority: 1,
+	priority: 2,
     },
 }
 
@@ -102,11 +102,7 @@ class DyadOp extends Op {
 
 export async function parser(input, options = {direction: "ltr", priority: true}) {
     const allOp = Object.assign({}, dyadicOperations, monadicOperations)
-    const dyadByPriority = Object.groupBy(
-	Object.entries(dyadicOperations)
-	    .map(a => Object.fromEntries([a]))
-	, a => a[Object.keys(a)[0]].priority
-    )
+
     // get rid of monadicOps
     const opIslandLengths = input
 	  .map(a => Number(Object.keys(allOp).includes(a)))
@@ -150,7 +146,77 @@ export async function parser(input, options = {direction: "ltr", priority: true}
 	  })
 	  .flat()
 
-    
+    // const dyadByPriority = Object.groupBy(
+    // 	Object.entries(dyadicOperations)
+    // 	    .map(a => Object.fromEntries([a]))
+    // 	, a => a[Object.keys(a)[0]].priority
+    // )
 
-    return [input, opIslandLengths, woFirstMonad, shorterMask, woMonads]
+    const dyadOpsInUse = woMonads
+	  .filter(a => typeof(a) == "string")
+
+    const dyadByPriority = Object.entries(Object.groupBy(
+	Object.entries(dyadicOperations)
+	    .filter(a => dyadOpsInUse.includes(a[0]))
+	    .map(a => Object.fromEntries([a]))
+	, a => a[Object.keys(a)[0]].priority
+    ))
+	  .toSorted((a, b) => a[0] < b[0] ? 1 : -1)
+	  .map(a => a[1].map(b => Object.keys(b)[0]))
+
+    const dyadMask = woMonads
+	  .map(a => typeof(a) == "string"
+	       && Object.keys(dyadicOperations).includes(a)
+	       ? 1
+	       : 0
+	  )
+
+    const res = dyadByPriority.map((_,__,___) => ___.slice(0,__+1).reduce((acc, ops) => {
+	let [dyadMask, woMonads] = acc
+	const dyadIslandLengths = dyadMask
+	      .map((a, i) => Number(a && ops.includes(woMonads[i])))
+	      .map((_, i, self) => [self[i-1], self[i], self[i+1]]
+		   .map(a => a ?? 0)
+		   .reduce((acc, a) => acc || a)
+		  )
+	      .toReversed()
+	      .map((_, i, array) => array.slice(0, i+1).reduce((acc, a) => a ? a + acc : 0))
+	      .map((a, i, array) => array[i+1] ?? 0 ? 0 : a)
+    	      .toReversed()
+
+	const stagedWoDyads = dyadIslandLengths.reduce((acc, a, i) => {
+	    let dip
+	    if (acc[1]) { dip = acc[1] + 1 }
+	    else if (a) { dip = -a + 1 }
+	    else { dip = a }
+
+	    let res
+	    if (a) { res = [...acc[0], woMonads.slice(i, i + a)] }
+	    else if (acc[1]) { res = acc[0] }
+	    else { res = [...acc[0], woMonads[i]] }
+
+	    return [res, dip]
+	}
+						       , [[], 0])
+	      .at(0)
+	      .map((a, _, self) => a instanceof Array
+		   ? a.filter(b => typeof(b) == "string")
+		   .reduce((acc, _) => {
+		       console.log(acc)
+		       const args = acc.slice(0, 3)
+		       return acc.toSpliced(0, 3, new DyadOp(args[1], [args[0], args[2]]))
+		   }
+			   , a)
+		   .at(0)
+		   : a
+		  )
+
+	const stagedDyadMask = stagedWoDyads
+	      .map(a => typeof(a) == "string" ? 1 : 0)
+
+	return [stagedDyadMask, stagedWoDyads]
+    }
+									  , [dyadMask, woMonads]))
+    
+    return [dyadOpsInUse, dyadByPriority, woMonads, res]
 }

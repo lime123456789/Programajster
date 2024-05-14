@@ -90,7 +90,7 @@ import { listOperations, run } from "/shared/calcEngine.js"
 		document.calc.txt.value = "NIE MOŻNA DZIELIĆ PRZEZ ZERO"
                 return;
             }
-	    if(typeof(result) == "string") {
+	    if(result.match(/[^ABCDEFGabcdefg123457890]+/)) {
 		document.calc.txt.value = result
                 return;		
 	    }
@@ -118,7 +118,7 @@ import { listOperations, run } from "/shared/calcEngine.js"
     }
 
 async function decResult() {
-        return await run(calc.txt.value);
+        return (await run(calc.txt.value)).toString()?.toUpperCase();
     }
 
     async function octResult() {
@@ -130,7 +130,7 @@ async function decResult() {
         //         result = eval(result + eqSplit[i-1] + Number("0o" + eqSplit[i]));
         //     }
         // }
-        return (await run(calc.txt.value, 8))?.toString(8);
+        return (await run(calc.txt.value, 8))?.toString(8)?.toUpperCase();
     }
 
     async function binResult() {
@@ -151,7 +151,7 @@ async function decResult() {
         //     result = "0" + result;
         // }
         // return result.match(/.{1,4}/g).join(" ");
-	return (await run(calc.txt.value, 2))?.toString(2)
+	return (await run(calc.txt.value, 2))?.toString(2)?.toUpperCase()
     }
 
     // Obsługa wpisywania z klawiatury 

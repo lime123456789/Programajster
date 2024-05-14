@@ -28,6 +28,7 @@ const dyadicOperations = {
  * example:
  * listOperations("monadicOperations") // will list only monadicOperations
  * listOperations("dyadicOperations", "monadicOperations") // will list both
+ * listOperations("*") // will list all
  */
 export function listOperations(...types) {
     return [...new Set(
@@ -35,6 +36,7 @@ export function listOperations(...types) {
 	    .map(a => ({
 		monadicOperations: Object.keys(monadicOperations),
 		dyadicOperations: Object.keys(dyadicOperations),
+		"*": Object.assign({}, dyadicOperations, monadicOperations)
 	    })[a])
 	    .flat()
     )]
@@ -64,13 +66,14 @@ const radixMapping = {
 
 export async function lexer(input, radix = 10) {
     return await Promise.all(
-	input.split(/\s+/)
+	input.trim()
+	    .split(/\s+/)
 	    .map(a => listOperations("monadicOperations", "dyadicOperations")
 		 .includes(a)
 		 ? { value: a }
-		 : Number(`${radixMapping[radix]}${a}`)
+		 : typeof(Number(`${radixMapping[radix]}${a}`)) == "number"
 		 ? { value: Number(`${radixMapping[radix]}${a}`) }
-		 : { error: "not a known token" }
+		 : { error: "nieznany token" }
 		)
 	    .map(a => new Promise((res, rej) => a?.error === undefined
 				  ? res(a?.value)
@@ -114,7 +117,7 @@ export async function parser(input, options = {direction: "ltr", priority: true}
 	  && Object.keys(monadicOperations).includes(input.at(0))
 	  ? [input.toSpliced(0, 2, new MonadOp(...input.slice(0, 2))), opIslandLengths.slice(1)]
 	  : [input, opIslandLengths]
-    const woMonads = shorterMask
+    const uncheckedWoMonads = shorterMask
 	  .map(a => a == 1 ? 0 : a)
 	  .reduce((acc, a, i) => {
 	      let dip
@@ -144,8 +147,13 @@ export async function parser(input, options = {direction: "ltr", priority: true}
 	      }
 	      return a
 	  })
-	  .flat()
 
+    if (uncheckedWoMonads.some(a => a instanceof Array)) {
+	return "niepoprawny ciąg operatorów"
+    }
+
+    const woMonads = uncheckedWoMonads
+    	  .flat()
     // const dyadByPriority = Object.groupBy(
     // 	Object.entries(dyadicOperations)
     // 	    .map(a => Object.fromEntries([a]))
@@ -222,5 +230,13 @@ export async function parser(input, options = {direction: "ltr", priority: true}
 }
 
 export async function run(input, radix) {
-    return (await parser(await lexer(input, radix))).eval()
+    const lexed = (await lexer(input, radix))
+    if (!(lexed instanceof Array)) {
+	return lexed
+    }
+    const parsed = (await parser(lexed))
+    if (!(parsed instanceof Op)) {
+	return parsed
+    }
+    return parsed.eval()
 }

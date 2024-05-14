@@ -21,8 +21,8 @@ body {
 
 .container-c {
 	position: relative;
-	min-width: 300px;
-	min-height: 400px;
+	min-width: min-content;
+	min-height: min-content;
 	padding: 40px 30px 30px;
 	border-radius: 20px;
 	background-color: #202020;

@@ -1,13 +1,13 @@
-document.addEventListener("DOMContentLoaded", () => {
-    
+import { saveEquation } from "/js/paper.js"
+import { listOperations, run } from "/shared/calcEngine.js"
     // Obaługa przycisków
-    window.operators =  ["+", "-", "/",  "*"];
-    window.equationRegex = /([*\/]|\b\s*-|\b\s*\+)/g;
-    window.keyList = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "+", "-", "/",  "*", "=", "DELETE"];
+    export let operators =  ["+", "-", "/",  "*"];
+    export let equationRegex = /([*\/]|\b\s*-|\b\s*\+)/g;
+    export let keyList = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "+", "-", "/",  "*", "=", "DELETE"];
 
-    var charBtns = document.querySelectorAll(".char");
+    let charBtns = document.querySelectorAll(".char");
 
-    for (i = 0; i < charBtns.length; i++) {
+    for (let i = 0; i < charBtns.length; i++) {
         charBtns[i].onclick = charClick;
     }
 
@@ -15,18 +15,18 @@ document.addEventListener("DOMContentLoaded", () => {
         if(document.calc.type.value != "HEX") {
             return;
         }
-        var value = this.id;
+        let value = this.id;
         document.calc.txt.value += value;
     }
 
-    var numberBtns = document.querySelectorAll(".num");
+    let numberBtns = document.querySelectorAll(".num");
 
-    for (i = 0; i < numberBtns.length; i++) {
+    for (let i = 0; i < numberBtns.length; i++) {
         numberBtns[i].onclick = numberClick;
     }
 
     function numberClick() {
-        var value = this.id;
+        let value = this.id;
         if(document.calc.type.value == "OCT" && ["8", "9"].includes(value)) {
             return;
         }
@@ -42,109 +42,116 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelector(".division").onclick = function() {
         if(!lastCharIsOperator()) {
-            document.calc.txt.value += "/";
+            document.calc.txt.value += " / ";
         }
     };
 
     document.querySelector(".multiplication").onclick = function() { 
         if(!lastCharIsOperator()) {
-            document.calc.txt.value += "*";
+            document.calc.txt.value += " * ";
         }  
     };
 
     document.querySelector(".minus").onclick = function() {
         if(!lastCharIsOperator()) {
-            document.calc.txt.value += "-";
+            document.calc.txt.value += " - ";
         }
     };
 
     document.querySelector(".plus").onclick = function() {
         if(!lastCharIsOperator()) {
-            document.calc.txt.value += "+";
+            document.calc.txt.value += " + ";
         }
     };
 
-    document.querySelector(".equal").onclick = function() {
+    document.querySelector(".equal").onclick = async function() {
         if(document.calc.txt.value.length == 0) {
             return;
         }
         if(!lastCharIsOperator()) {
-            var type = document.calc.type.value,
-                equation = calc.txt.value,
-                result = 0;
+            let type = document.calc.type.value
+            let equation = calc.txt.value
+            let result = 0;
             switch (type) {
                 case "HEX":
-                    result = hexResult();
+                    result = await hexResult();
                     break;
                 case "DEC":
-                    result = decResult();
+                    result = await decResult();
                     break;
                 case "OCT":
-                    result = octResult();
+                    result = await octResult();
                     break;
                 case "BIN":
-                    result = binResult();
+                    result = await binResult();
                     break;
             }
-            if(result == "NAN") {
+            if(result == "NAN" || result == "INFINITY") {
+		document.calc.txt.value = "NIE MOŻNA DZIELIĆ PRZEZ ZERO"
                 return;
             }
+	    if(typeof(result) == "string") {
+		document.calc.txt.value = result
+                return;		
+	    }
             document.calc.txt.value = result;
             saveEquation(type, equation, result);
         }
     };
 
     function lastCharIsOperator() {
-        const lastChar = document.calc.txt.value.slice(-1);
-        return operators.includes(lastChar);
+        const lastChar = document.calc.txt.value.trim().slice(-1);
+        return listOperations("*").includes(lastChar);
     }
 
-    function hexResult() {
-        var result = 0,
-            eqSplit = calc.txt.value.split(equationRegex);
-        result = eval( Number("0x" + eqSplit[0]) + eqSplit[1] + Number("0x" + eqSplit[2]) );
-        if(eqSplit.length > 0) {
-            for (let i = 4; i < eqSplit.length; i += 2) {
-                result = eval(result + eqSplit[i-1] + Number("0x" + eqSplit[i]));
-            }
-        }
-        return result.toString(16).toUpperCase();
+    async function hexResult() {
+        let result = 0
+        // let eqSplit = calc.txt.value.split(equationRegex);
+        // result = eval( Number(`0x${eqSplit[0]}`) + eqSplit[1] + Number("0x" + eqSplit[2]) );
+	result = await run(calc.txt.value, 16)
+        // if(eqSplit.length > 0) {
+        //     for (let i = 4; i < eqSplit.length; i += 2) {
+        //         result = eval(result + eqSplit[i-1] + Number("0x" + eqSplit[i]));
+        //     }
+        // }
+        return result?.toString(16)?.toUpperCase();
     }
 
-    function decResult() {
-        return eval(calc.txt.value);
+async function decResult() {
+        return await run(calc.txt.value);
     }
 
-    function octResult() {
-        var result = 0,
-            eqSplit = calc.txt.value.split(equationRegex);
-        result = eval( Number("0o" + eqSplit[0]) + eqSplit[1] + Number("0o" + eqSplit[2]) );
-        if(eqSplit.length > 0) {
-            for (let i = 4; i < eqSplit.length; i += 2) {
-                result = eval(result + eqSplit[i-1] + Number("0o" + eqSplit[i]));
-            }
-        }
-        return result.toString(8);
+    async function octResult() {
+        // let result = 0,
+        //     eqSplit = calc.txt.value.split(equationRegex);
+        // result = eval( Number("0o" + eqSplit[0]) + eqSplit[1] + Number("0o" + eqSplit[2]) );
+        // if(eqSplit.length > 0) {
+        //     for (let i = 4; i < eqSplit.length; i += 2) {
+        //         result = eval(result + eqSplit[i-1] + Number("0o" + eqSplit[i]));
+        //     }
+        // }
+        return (await run(calc.txt.value, 8))?.toString(8);
     }
 
-    function binResult() {
-        var result = 0,
-            eqSplit = calc.txt.value.split(equationRegex);
-        result = eval( Number("0b" + eqSplit[0]) + eqSplit[1] + Number("0b" + eqSplit[2]) );
-        if(eqSplit.length > 0) {
-            for (let i = 4; i < eqSplit.length; i += 2) {
-                result = eval(result + eqSplit[i-1] + Number("0b" + eqSplit[i]));
-            }
-        }
-        result = result.toString(2);
-        if(result.length % 4 == 1) {
-            result = "000" + result;
-        } else if(result.length % 4 == 2) {
-            result = "00" + result;
-        } else if(result.length % 4 == 3) {
-            result = "0" + result;
-        }
-        return result.match(/.{1,4}/g).join(" ");
+    async function binResult() {
+        // let result = 0,
+        //     eqSplit = calc.txt.value.split(equationRegex);
+        // result = eval( Number("0b" + eqSplit[0]) + eqSplit[1] + Number("0b" + eqSplit[2]) );
+        // if(eqSplit.length > 0) {
+        //     for (let i = 4; i < eqSplit.length; i += 2) {
+        //         result = eval(result + eqSplit[i-1] + Number("0b" + eqSplit[i]));
+        //     }
+        // }
+        // result = result.toString(2);
+        // if(result.length % 4 == 1) {
+        //     result = "000" + result;
+        // } else if(result.length % 4 == 2) {
+        //     result = "00" + result;
+        // } else if(result.length % 4 == 3) {
+        //     result = "0" + result;
+        // }
+        // return result.match(/.{1,4}/g).join(" ");
+	return (await run(calc.txt.value, 2))?.toString(2)
     }
 
     // Obsługa wpisywania z klawiatury 
@@ -172,4 +179,3 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-});

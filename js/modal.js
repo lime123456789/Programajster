@@ -1,4 +1,3 @@
-document.addEventListener("DOMContentLoaded", () => {
 
     // Obaługa okna modalnego i zmiany trybu kalkulatora
     document.querySelector(".type").onclick = function() {
@@ -9,9 +8,9 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelector(".calculator-modal").style.display = "none";
     };
 
-    var typeBtns = document.querySelectorAll(".type-select");
+    let typeBtns = document.querySelectorAll(".type-select");
 
-    for (i = 0; i < typeBtns.length; i++) {
+    for (let i = 0; i < typeBtns.length; i++) {
         typeBtns[i].onclick = closeModal;
     }
 
@@ -41,22 +40,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function enableCharBtns() {
-        var charBtns = document.getElementsByClassName("char");
-        for (i = 0; i < charBtns.length; i++) {
+        let charBtns = document.getElementsByClassName("char");
+        for (let i = 0; i < charBtns.length; i++) {
             charBtns[i].classList.remove("disable");
         }
     }
 
     function disableCharBtns() {
-        var charBtns = document.getElementsByClassName("char");
-        for (i = 0; i < charBtns.length; i++) {
+        let charBtns = document.getElementsByClassName("char");
+        for (let i = 0; i < charBtns.length; i++) {
             charBtns[i].classList.add("disable");
         }
     }
 
     function enableNumerBtns() {
-        var numBtns = document.getElementsByClassName("num");
-        for (i = 0; i < numBtns.length; i++) {
+        let numBtns = document.getElementsByClassName("num");
+        for (let i = 0; i < numBtns.length; i++) {
             numBtns[i].classList.remove("disable");
         }
     }
@@ -79,4 +78,3 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("2").classList.add("disable");
     }
     
-});

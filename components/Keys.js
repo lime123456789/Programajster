@@ -3,30 +3,22 @@ export class Keys extends HTMLElement {
 	super()
 	this.attachShadow({ mode: "open" })
 	this.shadowRoot.innerHTML = `
-
-  
-    
-
-<button-number-></button-number->
-<div class="cyfry-ostatni-wiersz">
-
-</div>
-
+<button-number- data-value="0"></button-number->
+<button-number- data-value="1"></button-number->
+<button-number- data-value="2"></button-number->
+<button-number- data-value="3"></button-number->
+<button-number- data-value="4"></button-number->
+<button-number- data-value="5"></button-number->
+<button-number- data-value="6"></button-number->
+<button-number- data-value="7"></button-number->
+<button-number- data-value="8"></button-number->
+<button-number- data-value="9"></button-number->
 <style>
-
   :host{
-    display: grid;
+      display: grid;
+      overflow: auto;
   }
-  .cyfry-ostatni-wiersz{
-    display: flex;
-    border: solid 3px cyan;
-  }
-  
-  
-
-
 </style>
         `
-	
     }
 }

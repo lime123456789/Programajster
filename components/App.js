@@ -5,24 +5,15 @@ export class App extends HTMLElement {
 	this.shadowRoot.innerHTML = `
 <screen-></screen->
 <keys-></keys->
-<button-operation-></button-operation->
-
-
-
 
 <style>
   :host {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       position: absolute;
+      width: 100%;
       inset: 0 0;
-      //border: solid #f72929 1px;
   }
-  :host > *{
-    flex-grow: 1;
-  }
-  
-  
-  
 </style>
         `
     }

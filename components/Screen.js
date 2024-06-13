@@ -1,31 +1,31 @@
+import { run } from "/shared/calcEngine.js"
+
 export class Screen extends HTMLElement {
     constructor() {
 	super()
 	this.attachShadow({ mode: "open" })
 	this.shadowRoot.innerHTML = `
-
-    <burgir-></burgir->
-
+<burgir-></burgir->
+<input>
 
 <style>
   :host {
       display: block;
-      border: red solid 3px;
+      background: #0f0;
   }
   input {
+      --padding: .5em;
       all: unset;
-      display: block;
-      width: 100%;
-      padding: .5em;
+      display: flex;
+      padding: var(--padding);
+      text-align: right;
+      width: calc(100% - var(--padding) * 2);
   }
-  body {
-    background: rgb(19, 19, 19);
-    color: #fff;
-    font-family: 'Noto Sans', sans-serif;
-  }
-  
 </style>
         `
-	this.shadowRoot.querySelector("input").addEventListener("change", _ => console.log(this.shadowRoot.querySelector("input").value))
+	this.shadowRoot.querySelector("input").addEventListener("change", async _ => {
+	    const input = this.shadowRoot.querySelector("input")
+	    input.value = await run(input.value)
+	})
     }
 }

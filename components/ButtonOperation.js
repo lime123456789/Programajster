@@ -3,26 +3,29 @@ export class ButtonOperation extends HTMLElement {
 	super()
 	this.attachShadow({ mode: "open" })
 	this.shadowRoot.innerHTML = `
-
- <div class="scrollmenu">
-      
-</div>
-
-
+<div id="button"></div>
 
 <style>
   :host{
-    display: grid;
+      display: block;
+      width: min-content;
+      height: min-content;
   }
-  
-  .scrollmenu{
-    border: solid red 3px;
-    displa
+  #button {
+      --padding: 1em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #00f;
+      padding: var(--padding);
+      height: calc(100% - var(--padding) * 2);
+      width: calc(100% - var(--padding) * 2);
   }
-  
 </style>
         `
-	//data-representation - dla obrazka
-
+    }
+    static observedAttributes = ["data-value"];
+    attributeChangedCallback(name) {
+	this.shadowRoot.querySelector("#button").textContent = this.dataset.value
     }
 }

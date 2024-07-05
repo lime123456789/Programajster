@@ -3,23 +3,30 @@ export class ButtonNumber extends HTMLElement {
 	super()
 	this.attachShadow({ mode: "open" })
 	this.shadowRoot.innerHTML = `
-<input type="button">
+<div id="button"></div>
 
 <style>
   :host{
       display: block;
+      width: min-content;
+      height: min-content;
   }
-  input {
-      all: unset;
-      display: block;
+  #button {
+      --padding: 1em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       background: #00f;
-      padding: 1em;
+      padding: var(--padding);
+      height: calc(100% - var(--padding) * 2);
+      width: calc(100% - var(--padding) * 2);
   }
 </style>
         `
     }
     static observedAttributes = ["data-value"];
     attributeChangedCallback(name) {
-      this.shadowRoot.querySelector("input").value = this.dataset.value
+	this.shadowRoot.querySelector("#button").textContent = this.dataset.value
     }
 }
+

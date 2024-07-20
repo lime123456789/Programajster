@@ -4,3 +4,9 @@ body {
     /* color: #fff; */
     font-family: 'Noto Sans', sans-serif;
 }
+
+@media screen and (aspect-ratio < 1) {
+    app- {
+	grid-template: 1fr 1fr / 1fr;
+    }
+}

@@ -9,7 +9,7 @@ export class App extends HTMLElement {
 <style>
   :host {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template: 1fr / 1fr 1fr;
       position: absolute;
       width: 100%;
       inset: 0 0;

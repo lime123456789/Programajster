@@ -36,7 +36,7 @@ export function listOperations(...types) {
 	    .map(a => ({
 		monadicOperations: Object.keys(monadicOperations),
 		dyadicOperations: Object.keys(dyadicOperations),
-		"*": Object.assign({}, dyadicOperations, monadicOperations)
+		"*": Object.keys(Object.assign({}, dyadicOperations, monadicOperations))
 	    })[a])
 	    .flat()
     )]

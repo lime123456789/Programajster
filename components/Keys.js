@@ -1,3 +1,5 @@
+import { listOperations } from "/shared/calcEngine.js"
+
 export class Keys extends HTMLElement {
     #systemGlyphs = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
     #systemTypes = ["bin", "oct", "dec", "hex"]
@@ -12,12 +14,22 @@ export class Keys extends HTMLElement {
   <div id="number"></div>
   <div id="overflow"></div>
 </div>
-<div id="operator"></div>
+<div class="operators">
+  <div id="operator">${
+listOperations("*")
+    .map(a => `<button-operation- data-value="${a}"></button-operation->`)
+    .join('')
+  }</div>
+</div>
 <style>
   :host {
       display: grid;
       overflow: auto;
       grid-template-columns: 3fr 1fr;
+  }
+  .numbers {
+      display: flex;
+      flex-direction: column;
   }
   #number {
       display: grid;
@@ -25,12 +37,27 @@ export class Keys extends HTMLElement {
   }
   #number > * {
       width: 100%;
+      height: 100%;
   }
   #overflow {
       display: flex;
+      flex-grow: 1;
   }
   #overflow > * {
       flex-grow: 1;
+      height: 100%;
+  }
+  .operators {
+      height: 100%;
+  }
+  #operator {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+  }
+  #operator > * {
+      width: 100%;
+      height: 100%;
   }
 </style>
         `
@@ -46,6 +73,7 @@ export class Keys extends HTMLElement {
 		  .toReversed()
 	    , overflowSet = numberSet.splice(-(numberSet.length % this.#numberLayoutWidthButtonWise))
 	    
+	    number.style.flexGrow = Math.floor(numberSet.length / this.#numberLayoutWidthButtonWise)
 	    number.innerHTML = numberSet
 		.map(a => `<button-number- data-value="${a}"></button-number->`)
 		.join('')

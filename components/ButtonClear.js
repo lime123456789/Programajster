@@ -3,7 +3,7 @@ export class ButtonClear extends HTMLElement {
 	super()
 	this.attachShadow({ mode: "open" })
 	this.shadowRoot.innerHTML = `
-<div id="button">=</div>
+<div id="button">C</div>
 
 <style>
   @import url("/shared/buttons.css") layer(generic)

@@ -15,6 +15,7 @@ export class Keys extends HTMLElement {
   <div id="overflow"></div>
 </div>
 <div class="operators">
+  <button-clear></button-clear>
   <div id="operator">${
 listOperations("*")
     .map(a => `<button-operation- data-value="${a}"></button-operation->`)

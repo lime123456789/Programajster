@@ -51,6 +51,11 @@ listOperations("*")
   }
   .operators {
       height: 100%;
+      display: grid;
+      grid-template: min-content 1fr min-content / 1fr;
+  }
+  .operators > :not(#operator) {
+      width: 100%;
   }
   #operator {
       display: flex;

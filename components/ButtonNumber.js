@@ -6,21 +6,7 @@ export class ButtonNumber extends HTMLElement {
 <div id="button"></div>
 
 <style>
-  :host{
-      display: block;
-      width: min-content;
-      height: min-content;
-  }
-  #button {
-      --padding: 1em;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #00f;
-      padding: var(--padding);
-      height: calc(100% - var(--padding) * 2);
-      width: calc(100% - var(--padding) * 2);
-  }
+  @import url("/shared/buttons.css") layer(generic)
 </style>
         `
     }

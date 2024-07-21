@@ -15,3 +15,6 @@ customElements.define("button-operation-", ButtonOperation)
 
 import { Burgir } from "/components/Burgir.js"
 customElements.define("burgir-", Burgir)
+
+import { ButtonClear } from "/components/ButtonClear.js"
+customElements.define("button-clear-", ButtonClear)

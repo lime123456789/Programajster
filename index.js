@@ -18,3 +18,6 @@ customElements.define("burgir-", Burgir)
 
 import { ButtonClear } from "/components/ButtonClear.js"
 customElements.define("button-clear-", ButtonClear)
+
+import { ButtonEval } from "/components/ButtonEval.js"
+customElements.define("button-eval-", ButtonEval)

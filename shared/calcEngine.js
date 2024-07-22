@@ -57,6 +57,7 @@ export function evaluate(op, ...args) {
     })[args.length]?.(op, ...args.map(a => a instanceof Op ? a.eval() : a))
 }
 
+export const radixesAllowed = [2, 8, 10, 16]
 const radixMapping = {
     2: "0b",
     8: "0o",

@@ -1,9 +1,7 @@
-import { listOperations } from "/shared/calcEngine.js"
+import { listOperations, radixesAllowed } from "/shared/calcEngine.js"
 
 export class Keys extends HTMLElement {
     #systemGlyphs = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
-    #systemTypes = ["bin", "oct", "dec", "hex"]
-    #typesToRanges = {bin: 2, oct: 8, dec: 10, hex: 16}
     #numberLayoutWidthButtonWise = 3
 
     constructor() {
@@ -72,11 +70,11 @@ listOperations("*")
 
     static observedAttributes = ["data-system"]
     attributeChangedCallback(name) {
-	if (this.#systemTypes.includes(this.dataset.system)) {
+	if (radixesAllowed.includes(Number(this.dataset.system))) {
 	    const number = this.shadowRoot.querySelector("#number")
 	    const overflow = this.shadowRoot.querySelector("#overflow")
 	    const numberSet = this.#systemGlyphs
-		  .toSpliced(this.#typesToRanges[this.dataset.system])
+		  .toSpliced(Number(this.dataset.system))
 		  .toReversed()
 	    , overflowSet = numberSet.splice(-(numberSet.length % this.#numberLayoutWidthButtonWise))
 	    
@@ -94,7 +92,7 @@ listOperations("*")
 
     connectedCallback() {
 	if (this.dataset.system === undefined) {
-	    this.setAttribute("data-system", "dec")
+	    this.setAttribute("data-system", "10")
 	}
     }
 }

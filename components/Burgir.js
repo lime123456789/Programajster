@@ -4,7 +4,9 @@ export class Burgir extends HTMLElement {
 	this.attachShadow({ mode: "open" })
 	this.shadowRoot.innerHTML = `
 <div id="button"></div>
-<div id="sidebar"></div>
+<div id="sidebar">
+  <radix-controll-></radix-controll->
+</div>
 <style>
   :host {
       position: absolute;

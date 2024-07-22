@@ -21,3 +21,6 @@ customElements.define("button-clear-", ButtonClear)
 
 import { ButtonEval } from "/components/ButtonEval.js"
 customElements.define("button-eval-", ButtonEval)
+
+import { RadixControll } from "/components/RadixControll.js"
+customElements.define("radix-controll-", RadixControll)

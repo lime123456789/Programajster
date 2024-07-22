@@ -1,4 +1,4 @@
-import { listOperations, radixesAllowed } from "/shared/calcEngine.js"
+import { listOperations, radixesAllowed, DEFAULT_RADIX } from "/shared/calcEngine.js"
 
 export class Keys extends HTMLElement {
     #systemGlyphs = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
@@ -92,7 +92,7 @@ listOperations("*")
 
     connectedCallback() {
 	if (this.dataset.system === undefined) {
-	    this.setAttribute("data-system", "10")
+	    this.setAttribute("data-system", DEFAULT_RADIX)
 	}
     }
 }

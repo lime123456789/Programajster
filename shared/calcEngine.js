@@ -1,3 +1,5 @@
+export const DEFAULT_RADIX = 10
+
 const monadicOperations = {
     "-": {
 	function: a => -1 * a,
@@ -65,7 +67,7 @@ const radixMapping = {
     16: "0x",
 }
 
-export async function lexer(input, radix = 10) {
+export async function lexer(input, radix = DEFAULT_RADIX) {
     return await Promise.all(
 	input.trim()
 	    .split(/\s+/)

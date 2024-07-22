@@ -1,4 +1,4 @@
-import { radixesAllowed } from "/shared/calcEngine.js"
+import { radixesAllowed, DEFAULT_RADIX } from "/shared/calcEngine.js"
 
 export class RadixControll extends HTMLElement {
     #radixNames = {
@@ -16,7 +16,7 @@ export class RadixControll extends HTMLElement {
       .map(a => `
   <label>
     ${this.#radixNames[a].short}
-    <input type="radio" name="radix" value="${a}">
+    <input type="radio" name="radix" value="${a}" ${a == DEFAULT_RADIX ? "checked" : ""}>
   </label>
 	    `)
 .join('')

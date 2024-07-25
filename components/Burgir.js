@@ -5,7 +5,7 @@ export class Burgir extends HTMLElement {
 	this.shadowRoot.innerHTML = `
 <div id="button"></div>
 <div id="sidebar">
-  <radix-controll-></radix-controll->
+  <radix-controll- id="radix-controll-main"></radix-controll->
 </div>
 <style>
   :host {

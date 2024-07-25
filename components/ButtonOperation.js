@@ -1,6 +1,11 @@
+import { screenReceiver } from "/components/Screen.js"
+
 export class ButtonOperation extends HTMLElement {
     constructor() {
 	super()
+	if (this.dataset.value === undefined) {
+	    throw "value required"
+	}
 	this.attachShadow({ mode: "open" })
 	this.shadowRoot.innerHTML = `
 <div id="button"></div>
@@ -9,6 +14,14 @@ export class ButtonOperation extends HTMLElement {
   @import url("/shared/buttons.css") layer(generic)
 </style>
         `
+	this.shadowRoot.querySelector("#button").addEventListener("click", () => {
+	    screenReceiver.hook("screen-main", subject => {
+		subject.dispatchEvent(new CustomEvent("insertOperation", {
+		    detail: this.dataset.value,
+		    bubbles: false,
+		}))
+	    })
+	})
     }
     static observedAttributes = ["data-value"];
     attributeChangedCallback(name) {

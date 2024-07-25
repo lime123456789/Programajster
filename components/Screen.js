@@ -1,6 +1,17 @@
+import { DEFAULT_RADIX } from "/shared/calcEngine.js"
 import { run } from "/shared/calcEngine.js"
 
+const subjects = []
+export const screenReceiver = {
+    hook(idName, fn) {
+	subjects
+	    .filter(a => a.id == idName)
+	    .map(fn)
+    }
+}
+
 export class Screen extends HTMLElement {
+    #radix = DEFAULT_RADIX
     constructor() {
 	super()
 	this.attachShadow({ mode: "open" })
@@ -25,16 +36,41 @@ export class Screen extends HTMLElement {
   }
 </style>
         `
-	this.shadowRoot.querySelector("#input").addEventListener("keydown", async event => {
+	this.shadowRoot.querySelector("#input").addEventListener("keydown", event => {
 	    const input = this.shadowRoot.querySelector("#input")
 	    if (event.key == "Enter") {
 		event.preventDefault()
 		input.dispatchEvent(new Event("change"))
 	    }
 	})
-	this.shadowRoot.querySelector("#input").addEventListener("change", async _ => {
-	    const input = this.shadowRoot.querySelector("#input")
-	    input.textContent = await run(input.textContent)
+	this.shadowRoot.querySelector("#input").addEventListener("change", _ => {
+	    this.dispatchEvent(new CustomEvent("eval", {
+		bubbles: false,
+	    }))
 	})
+	this.addEventListener("clear", event => {
+	    this.shadowRoot.querySelector("#input").textContent = ""
+	})
+	this.addEventListener("eval", async event => {
+	    const input = this.shadowRoot.querySelector("#input")
+	    input.textContent = await run(input.textContent, this.#radix)
+	})
+	this.addEventListener("insertNumber", event => {
+	    const input = this.shadowRoot.querySelector("#input")
+	    input.textContent += String(event.detail)
+	})
+	this.addEventListener("insertOperation", event => {
+	    const input = this.shadowRoot.querySelector("#input")
+	    input.textContent += ` ${event.detail} `
+	})
+	this.addEventListener("systemChange", event => {
+	    this.#radix = event.detail
+	})
+    }
+    connectedCallback() {
+	subjects.push(this)
+    }
+    disconnectedCallback() {
+	subjects.splice(subjects.indexOf(this), 1)
     }
 }

@@ -1,3 +1,5 @@
+import { screenReceiver } from "/components/Screen.js"
+
 export class ButtonClear extends HTMLElement {
     constructor() {
 	super()
@@ -9,5 +11,12 @@ export class ButtonClear extends HTMLElement {
   @import url("/shared/buttons.css") layer(generic)
 </style>
         `
+	this.shadowRoot.querySelector("#button").addEventListener("click", () => {
+		screenReceiver.hook("screen-main", subject => {
+		    subject.dispatchEvent(new CustomEvent("clear", {
+			bubbles: false,
+		    }))
+		})
+	    })
     }
 }

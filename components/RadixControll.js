@@ -1,4 +1,15 @@
 import { radixesAllowed, DEFAULT_RADIX } from "/shared/calcEngine.js"
+import { keysReceiver } from "/components/Keys.js"
+import { screenReceiver } from "/components/Screen.js"
+
+const subjects = []
+export const radixControllReceiver = {
+    hook(idName, fn) {
+	subjects
+	    .filter(a => a.id == idName)
+	    .map(fn)
+    }
+}
 
 export class RadixControll extends HTMLElement {
     #radixNames = {
@@ -16,7 +27,7 @@ export class RadixControll extends HTMLElement {
       .map(a => `
   <label>
     ${this.#radixNames[a].short}
-    <input type="radio" name="radix" value="${a}" ${a == DEFAULT_RADIX ? "checked" : ""}>
+    <input type="radio" name="radix" value="${a}">
   </label>
 	    `)
 .join('')
@@ -33,5 +44,35 @@ export class RadixControll extends HTMLElement {
   }
 </style>
         `
+	;[...this.shadowRoot.querySelectorAll("#radixes input")]
+	    .map(a => a.addEventListener("change", event => {
+		keysReceiver.hook("keys-main", subject => {
+		    subject.dispatchEvent(new CustomEvent("systemChange", {
+			detail: event.target.value,
+			bubbles: false,
+		    }))
+		})
+		screenReceiver.hook("screen-main", subject => {
+		    subject.dispatchEvent(new CustomEvent("systemChange", {
+			detail: event.target.value,
+			bubbles: false,
+		    }))
+		})
+	    }))
+	this.addEventListener("getRadixResponse", event => {
+	    const input = this.shadowRoot.querySelector(`#radixes input[value="${event.detail}"]`)
+	    input.checked = true
+	})
+    }
+    connectedCallback() {
+    	subjects.push(this)
+	keysReceiver.hook(`keys-${this.id.match(/^radix-controll-(.*)/)[1]}`, subject => {
+	    subject.dispatchEvent(new CustomEvent("getRadix", {
+		bubbles: false,
+	    }))
+	})
+    }
+    disconnectedCallback() {
+	subjects.splice(subjects.indexOf(this), 1)
     }
 }

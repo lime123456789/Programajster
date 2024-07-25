@@ -1,4 +1,14 @@
 import { listOperations, radixesAllowed, DEFAULT_RADIX } from "/shared/calcEngine.js"
+import { radixControllReceiver } from "/components/RadixControll.js"
+
+const subjects = []
+export const keysReceiver = {
+    hook(idName, fn) {
+	subjects
+	    .filter(a => a.id == idName)
+	    .map(fn)
+    }
+}
 
 export class Keys extends HTMLElement {
     #systemGlyphs = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
@@ -66,6 +76,17 @@ listOperations("*")
   }
 </style>
         `
+	this.addEventListener("systemChange", event => {
+	    this.setAttribute("data-system", event.detail)
+	})
+	this.addEventListener("getRadix", event => {
+	    radixControllReceiver.hook(`radix-controll-${this.id.match(/^keys-(.*)/)[1]}`, subject => {
+		subject.dispatchEvent(new CustomEvent("getRadixResponse", {
+		    detail: this.dataset.system,
+		    bubbles: false,
+		}))
+	    })
+	})
     }
 
     static observedAttributes = ["data-system"]
@@ -91,8 +112,18 @@ listOperations("*")
     }
 
     connectedCallback() {
+    	subjects.push(this)
 	if (this.dataset.system === undefined) {
 	    this.setAttribute("data-system", DEFAULT_RADIX)
 	}
+	radixControllReceiver.hook(`radix-controll-${this.id.match(/^keys-(.*)/)[1]}`, subject => {
+	    subject.dispatchEvent(new CustomEvent("getRadixResponse", {
+		detail: this.dataset.system,
+		bubbles: false,
+	    }))
+	})
+    }
+    disconnectedCallback() {
+	subjects.splice(subjects.indexOf(this), 1)
     }
 }

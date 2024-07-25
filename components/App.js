@@ -3,8 +3,8 @@ export class App extends HTMLElement {
 	super()
 	this.attachShadow({ mode: "open" })
 	this.shadowRoot.innerHTML = `
-<screen-></screen->
-<keys-></keys->
+<screen- id="screen-main"></screen->
+<keys- id="keys-main"></keys->
 
 <style>
   :host {
